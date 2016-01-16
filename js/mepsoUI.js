@@ -4,13 +4,10 @@ var editMode = 0;
 var playlistEdited;
 var currentlyEditing = false;
 eurecaClient.exports.toggleLoadingScreen = function (){
-    //console.log('toggled');
     if (idHasClass('loading', 'active')) {
-        //remove active class
         document.getElementById('loading').classList.remove("active");
     }
     else {
-        //remove active class
         document.getElementById('loading').classList.add("active");
     }
 }
@@ -77,7 +74,6 @@ eurecaClient.ready(function(serverProxy){
       });
       document.getElementById('prevSong').addEventListener('click',function(e){
         e.preventDefault();
-        //MepsoMediaControls.setState({songCurrentlyPlaying:3});
         if(audioPlayer.currentTime < 1.8){
           if(song > 0){
             changeSong(song - 1);playSong();
@@ -117,7 +113,6 @@ eurecaClient.ready(function(serverProxy){
       super();
     }
     render(){
-      //Es6 attribute spread is amazing, can pass in objects as attr
       return <div>
                 <MainMenuButton {...menuStructure._0} className={"mainMenuButton"}/>
              </div>
@@ -170,31 +165,26 @@ eurecaClient.ready(function(serverProxy){
           break;
         default: return this._playAction();
       }
-
     }
 
     render(){
-
       return <div className={"playlist"}>
         <a onClick={this._action.bind(this)} mode={this.props.mode}>{this.props.playlistName}</a>
       </div>
     }
-
   }
-
 
   var draggedObject;
   class Song extends React.Component{
     constructor(props){
       super(props);
       this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true};
-      //this.dragStart = this.dragStart.bind(this);
     }
 
     _clickAction(){
 
       if(this.state.dragMode == false){
-        changeSong(this.props.arrIndex); //-1 because of db indices vs playlists array
+        changeSong(this.props.arrIndex);
         playSong();
       }
     }
@@ -203,19 +193,15 @@ eurecaClient.ready(function(serverProxy){
 
       if(e.currentTarget.parentNode.parentNode.id == 'screen'){
         Array.prototype.every.call(document.getElementById('screen2').getElementsByClassName('track'),function(e1){
-
           if(e1.getAttribute('data-songid') == e.currentTarget.getAttribute('data-songid')){
-
             this.setState({eligibleToDrag:false});
             e.currentTarget.classList.add('ineligible'); //since we're not really using the virtualdom here
             return false;
           }
           else{
             e.currentTarget.classList.remove('ineligible');
-
             return true;
           }
-          //  e.target.parentNode.insertBefore(draggedObject,e.target.nextElementSibling);
         },this);
       }
 
@@ -231,17 +217,13 @@ eurecaClient.ready(function(serverProxy){
 
     dragEnd(e){
       e.preventDefault();
-      //console.log('end drag');
     }
 
     dragOver(e){
       e.preventDefault();
       var relY = e.clientY - e.target.offsetTop;
       var height = e.target.offsetHeight / 2;
-      //console.log("ready",this.state.eligibleToDrag);
       if(e.target.parentNode.parentNode.id == 'screen2' && !draggedObject.classList.contains('ineligible')){
-        //console.log(this);
-
         if(draggedObject.parentNode.parentNode.id == 'screen'){
           var clone = draggedObject.cloneNode(true);
           var cloneSibling = draggedObject.nextElementSibling;
@@ -256,7 +238,6 @@ eurecaClient.ready(function(serverProxy){
       }
       else if(e.target.parentNode.parentNode.id == 'screen' && draggedObject.parentNode && draggedObject.parentNode.parentNode.id == 'screen2' && document.getElementById('screen2').getElementsByClassName('track').length > 1){
         draggedObject.remove();
-        //e.stopPropagation();
       }
       return;
 
@@ -327,13 +308,10 @@ eurecaClient.ready(function(serverProxy){
     }
 
     componentDidMount(){
-      console.log('mounted');
-      //make textbox react component
       this.addEventListeners();
     }
 
     componentWillUnmount(){
-      console.log('unmounting');
 
     }
 
@@ -345,7 +323,7 @@ eurecaClient.ready(function(serverProxy){
     }
 
     _onComplete(){
-        //finishing action, message etc. here. Maybe this should be a state.
+
     }
 
     render(){
@@ -468,7 +446,6 @@ eurecaClient.ready(function(serverProxy){
     xhr.onload = function(){
       if (xhr.status === 200){
         playlists = JSON.parse(xhr.responseText);
-        //resetScreen();
         var listOfPlaylists=[];
         for(var i = 0; i < playlists.ids.length; i++){
           listOfPlaylists.push(<Playlist mode={mode} data-playlistId={playlists.ids[i]} playlistId={playlists.ids[i]} playlistName={playlists.playlistNames[i]} key={i}/>)
@@ -491,7 +468,6 @@ eurecaClient.ready(function(serverProxy){
     var xhr = new XMLHttpRequest();
     var queryString = '?';
     var localQuery = globalQuery.slice();
-    //console.log('GLOBAL QUERY!',globalQuery);
   	for(var i = localQuery.length-1; i > -1; i--){
   		if(i == 0){
         console.log('==',localQuery[i]);
@@ -503,17 +479,13 @@ eurecaClient.ready(function(serverProxy){
       if(localQuery.length > 0){
         localQuery.pop();
       }
-      //console.log('-QUERYSTRING',queryString);
-
   	}
-    console.log('typeof',typeof type);
     if(type == null || type == undefined){
 
       return queryString;
     }
     queryString = queryString.split('/').join('%2f');
     xhr.open('GET', encodeURI('/category/'+type.toString()+queryString));
-
     xhr.onload = function(){
       if(xhr.status === 200){
         categoryInfo = JSON.parse(xhr.responseText);
@@ -535,12 +507,10 @@ eurecaClient.ready(function(serverProxy){
 		default:
 			xhr.open('GET', encodeURI('/category/2'+'?genre='+genre));
 		}
-
 	  xhr.onload = function(){
 		  if(xhr.status === 200){
 			  categoryInfo = JSON.parse(xhr.responseText);
 			  listCategory(categoryInfo,2);
-
 		  }
 		  else{
 			  console.log('failed to retrieve artists');
@@ -585,7 +555,6 @@ eurecaClient.ready(function(serverProxy){
   }
 
   function cleanQuery(){
-    console.log('cleaning query');
 	  globalQuery = [];
   }
 
@@ -634,7 +603,6 @@ eurecaClient.ready(function(serverProxy){
   }
 
   function checkIfNextSong(){
-      //console.log(song);
       if(playlistInfo.Tracks[song+1] != null){
         console.log(playlistInfo.Tracks[song+1].trackInfo.Title + " up next");
         song++;
@@ -645,9 +613,7 @@ eurecaClient.ready(function(serverProxy){
   function timeUpdate(){
     audioPlayer.removeEventListener("timeupdate",true);
     audioPlayer.addEventListener("timeupdate",function(){
-      //console.log(audioPlayer.currentTime,audioPlayer.duration)
       if(audioPlayer.currentTime == audioPlayer.duration){
-        //console.log('made it',song);
         audioPlayer.setAttribute("src","");
         checkIfNextSong(song);
         return;
@@ -996,7 +962,6 @@ eurecaClient.ready(function(serverProxy){
         });
       }
 
-  //should be in a separate file, but react calls in here are messing with that, will investigate later.
 
 
   function getNextMenu(menu, back){

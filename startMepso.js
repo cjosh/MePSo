@@ -22,9 +22,6 @@ var server = http.createServer(function(req, res){
 	  playlistUrl = req.url.toString().substring(req.url.toString().lastIndexOf('/')+1);
 	  queryString = playlistUrl.indexOf('?') > -1 ? playlistUrl.substring(playlistUrl.indexOf('?'),playlistUrl.length) : queryString;
 	  playlistUrl = playlistUrl.indexOf('?') > -1 ? playlistUrl.substring(0,playlistUrl.indexOf('?')) : playlistUrl;
-    //queryString = queryString.split('%2f').join('/');
-	  //console.log("playlist Data:"+playlistUrl.indexOf('?') > -1 +"\nplaylistUrl: "+playlistUrl,queryString);
-    //console.log('Q:',playlistUrl,queryString);
 	  switch(req.url){
 		case "/playlists/":
 		  var c;
@@ -38,7 +35,6 @@ var server = http.createServer(function(req, res){
 		  break;
 		case "/playlists/"+playlistUrl+queryString:
 		  if(req.method == 'GET'){
-        //console.log('playlist url',playlistUrl,queryString)
   			res.writeHead(200, {"Content-Type": "application/json"});
   			backend.getPlaylistAJAX(playlistUrl,queryString == '' ? null : queryString,function(result){
   			  res.write(JSON.stringify(result[0],null,3));
@@ -47,7 +43,6 @@ var server = http.createServer(function(req, res){
 		  }
 		  if(req.method == 'DELETE'){
   			backend.removePlaylist(playlistUrl);
-  			//console.log('playlist id ' +playlistUrl+ ' removed.');
   			res.end();
 		  }
       if(req.method == 'PUT'){
@@ -56,7 +51,6 @@ var server = http.createServer(function(req, res){
         }
         res.writeHead(200, {"Content-Type": "application/json"});
         backend.editPlaylist(playlistUrl > 0 ? playlistUrl : -1 ,queryString.length > 0 ? queryString : null,function(result){
-          //res.write(JSON.stringify(result,null,3));
           res.end();
         });
       }
@@ -77,7 +71,6 @@ var server = http.createServer(function(req, res){
 		  break;
     case "/playlist/temp"+queryString:
       //build a query string through search by artist/album
-      //console.log('cat url',queryString);
       if(req.method == 'GET'){
   			res.writeHead(200, {"Content-Type": "application/json"});
   			backend.buildCatPlaylist(queryString,function(result){

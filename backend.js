@@ -23,7 +23,7 @@ var musDir = "";
 var playlist = {name: null, list : []};//needs to be keypair. object with playlist name and array.
 var async = require('async');
 var necessaryColumns = "Id, Name, Title, AlbumArtist, TrackNumber, TrackNumberOf,Time, Artist, Album, genre, composer, producer, plays, DateAdded, Size, SampleRate, BitRate, Flag1, Flag2, Flag3, Flag4, ITunesId,FileType, Locations, PlayCount, year, rating, TrackType, Normalization, BPM, libpersid, persid";
-//playlist.name = '36-10';
+
 
 //Includes polyfill straight from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
 if (![].includes) {
@@ -170,62 +170,61 @@ function removeLoader(){
 //ITunes library xml
 function processForDB(x){
 	switch(x){
-	case "Track ID":
-	return "ITunesId";
-	case "Name":
-	return "Title";
-	case "Artist":
-	return "Artist";
-	case "Album Artist":
-	return "AlbumArtist";
-	case "Album":
-	return "Album";
-	case "Genre":
-	return "genre";
-	case "Bit Rate":
-	return "bitRate";
-	case "Sort Album Artist":
-	return "SortingAlbum";
-	case "Total Time":
-	return "Time";
-	case "Track Number":
-	return "TrackNumber";
-	case "Track Count":
-	return "TrackNumberOf";
-	case "Composer":
-	return "Composer";
-	case "Kind":
-	return "FileType";
-	case "Date Added":
-	return "DateAdded";
-	case "Sample Rate":
-	return "sampleRate";
-	case "Play Count":
-	return "PlayCount";
-	case "Size":
-	return "Size";
-	case "Comments":
-	return "Comments";
-	case "Year":
-	return "Year";
-  case "Persistent ID":
-  return "persid";
-  case "Rating":
-  return "rating";
-  case "Track Type":
-  return "TrackType";
-  case "Normalization":
-  return "Normalization";
-  case "BPM":
-  return "BPM";
-	default:
-	return "Flag4";
+  	case "Track ID":
+  	return "ITunesId";
+  	case "Name":
+  	return "Title";
+  	case "Artist":
+  	return "Artist";
+  	case "Album Artist":
+  	return "AlbumArtist";
+  	case "Album":
+  	return "Album";
+  	case "Genre":
+  	return "genre";
+  	case "Bit Rate":
+  	return "bitRate";
+  	case "Sort Album Artist":
+  	return "SortingAlbum";
+  	case "Total Time":
+  	return "Time";
+  	case "Track Number":
+  	return "TrackNumber";
+  	case "Track Count":
+  	return "TrackNumberOf";
+  	case "Composer":
+  	return "Composer";
+  	case "Kind":
+  	return "FileType";
+  	case "Date Added":
+  	return "DateAdded";
+  	case "Sample Rate":
+  	return "sampleRate";
+  	case "Play Count":
+  	return "PlayCount";
+  	case "Size":
+  	return "Size";
+  	case "Comments":
+  	return "Comments";
+  	case "Year":
+  	return "Year";
+    case "Persistent ID":
+    return "persid";
+    case "Rating":
+    return "rating";
+    case "Track Type":
+    return "TrackType";
+    case "Normalization":
+    return "Normalization";
+    case "BPM":
+    return "BPM";
+  	default:
+  	return "Flag4";
 	}
 }
 
 
 function attemptMatch(file){
-//console.log('arrived');
 var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, metadata){
   if (err){ console.log(file);throw err ;}
   var song = musicdb.get("SELECT * FROM MUSIC WHERE Size=" +fs.statSync(file)['size'], function(err, row){
@@ -246,9 +245,7 @@ var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, 
     else
     {
       stmt = musicdb.prepare("INSERT OR REPLACE INTO MUSIC(Artist, Title, AlbumArtist, Album, Year, TrackNumber,TrackNumberOf,genre,AlbumArt,Time,Size,Locations,DateAdded) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-      //, Year, TrackNumber, TrackNumberOf, genre,
       var a,b,c,d,e,f,g,h,i,j,k;
-      //console.log(metadata.artist[0]);
       if(metadata.artist[0]){a = metadata.artist[0]}else{a = null}
       if(metadata.title){b = metadata.title}else{b = null}
       if(metadata.albumartist[0]){c = metadata.albumartist[0]}else{c = null}
@@ -262,7 +259,6 @@ var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, 
       k = fs.statSync(file)['size'];
       l = __dirname + musDir + path.normalize(file).toString().split('/Loader/')[1];
       m = Date();
-      //m = "MPEG audio file";
       stmt.run(a,b,c,d,e,f,g,h,i,j,k,l,m);
 
     }
@@ -384,13 +380,10 @@ function addITunesPlaylist(pathToFile,callback){
           function findLocalId(playListToAdd,startIndex){
             //find the Music DB ID, since that's the ID the program will use
             order = startIndex;
-            //console.log(playListToAdd);
             stmt = 'SELECT id FROM MUSIC WHERE Persid = "'+playListToAdd[order]+'" LIMIT 1';
-            //console.log(stmt);
             musicdb.each(stmt, function(err, row){
               if (err){console.log(row);throw err;}
               playListToAdd[order] = row.Id;
-              //console.log(row);
               order++;
               if(order < playListToAdd.length ){
                 findLocalId(playListToAdd, order);
@@ -410,11 +403,10 @@ function addITunesPlaylist(pathToFile,callback){
 
 
 //this and the next function aren't in use
-function addTrackToPlaylist(activePlaylist,trackId){
+/*function addTrackToPlaylist(activePlaylist,trackId){
   musicdb.serialize(function(){
   console.log(activePlaylist);
   stmt = "SELECT Tracks FROM PLAYLISTS WHERE NAME = '" + activePlaylist.name.toString() +"' LIMIT 1";
-  //stmt = musicdb.prepare("UPDATE PLAYLISTS SET Tracks = ? WHERE Name = ?", + activePlaylist.name);
   console.log(stmt);
   activePlaylist.list.push(trackId);
   var currentContents =  [];
@@ -437,7 +429,7 @@ function getActiveTrackId(){
 function getActivePlaylist(playlist){
   var playlistContent = [];
   return;
-}
+}*/
 
 function testDBFunction(testDBFunctionVariable1){
   musicdb.serialize(function(){
@@ -483,7 +475,6 @@ function getPlaylistAJAX(id, query, callback){
     buildCatPlaylist(queryString,function(result){
       queryString = result;
       stmt = "SELECT " + necessaryColumns + " FROM MUSIC " +queryString; //custom/generated playlist
-      //console.log('STMT', stmt);
     });
 
 
@@ -491,11 +482,9 @@ function getPlaylistAJAX(id, query, callback){
   else{
 	   stmt = "SELECT ID, NAME, TRACKS FROM PLAYLISTS WHERE ID = "+id; //get specific id
   }
-  //console.log(stmt);
   var data,songObj, temp;
   musicdb.serialize(function(){
   musicdb.all(stmt,function(err,rows){
-	  //console.log(rows);
       if (id < 1){
         data = [{
           Id: id,
@@ -545,7 +534,6 @@ function getPlaylistAJAX(id, query, callback){
 
 function getByUnique(mode,additional,callback){
   //additional is a query string
-  //console.log("this function:",mode,additional,callback);
   //also gets used by buildCatPlaylist()
   var results = [];
   var column;
@@ -568,20 +556,16 @@ function getByUnique(mode,additional,callback){
 
   if(additional){
     additionalParam = ' WHERE ';
-    //console.log('additional',additional);
     var query = additional;
-
     query = query.replace('&artist=','artist=');
     query = query.replace('artist=',' artist=');
     query = query.replace('&genre=',' genre=');
     query = query.replace('&album=','album=');
-        query = query.replace('album=', ' album=');
-    //replace null
+    query = query.replace('album=', ' album=');
     var queryComponents = query.split(' ');
     if(queryComponents[0].charAt(0) == '?'){
       queryComponents[0] = queryComponents[0].substring(1);
     }
-    //console.log("COMPONENTS",queryComponents);
     if(queryComponents[0].length < 1){ //SHITTY CHECK
       queryComponents.splice(0,1);
     }
@@ -598,10 +582,8 @@ function getByUnique(mode,additional,callback){
         if(endQuoteNeeded){
           queryComponents[i]+= '"';
         }
-        //console.log(queryComponents[i]);
         if(i < 1){
             additionalParam += queryComponents[i];
-            //console.log(additionalParam);
         }
         else{
             additionalParam += queryComponents[i]+' AND ';
@@ -611,9 +593,7 @@ function getByUnique(mode,additional,callback){
   }
 
     stmt = 'SELECT DISTINCT ' + column + ' COLLATE NOCASE FROM MUSIC' + additionalParam;
-    //console.log(stmt,mode);
     musicdb.each(stmt, function(err,row){
-    //console.log(row);
     results.push(row[column+' COLLATE NOCASE']);
   },function(){callback(mode ? results : additionalParam)});
 }
@@ -659,14 +639,11 @@ function browseListFiles(directory,callback){
 
 function checkRegisteredPlaylists(xmlPlaylistsInFolder,callback){
   var xpif = [];
-
   stmt = "SELECT * FROM PLAYLISTS";
   musicdb.each(stmt,function(err,row){
     if(err){console.log(err);}
-    //console.log("registered playlists",row, row.Path);
     xmlPlaylistsInFolder.forEach(function(p, index, array){
       if (row.Path && row.Path.toString().endsWith(p.fileName)){
-          //need to test multiple playlists
           xpif.push({listIndex:p.listIndex,fileName:p.fileName});
       }
       if(index == array.length - 1){
@@ -723,7 +700,6 @@ if (typeof String.prototype.endsWith !== 'function') {
 
 function buildCatPlaylist(query,callback){
   getByUnique(null,query,function(result){
-    //console.log("BCP",result);
     callback(result);
   });
 
@@ -756,6 +732,7 @@ function readDB(callback){
     callback(row.MUSICDBLoc);
   });
 }
+
 function checkForOrCreateConfig(callback){
   fs.stat('config.db', function(err,stats){
       if(err){console.log(err);}
@@ -765,6 +742,7 @@ function checkForOrCreateConfig(callback){
       });
     });
   };
+
 function setConfigDefaults(callback){
     configdb.serialize(function(){
         configstmt = configdb.prepare("INSERT OR REPLACE INTO CONFIG(Id,MusicDir,LoadDir,MUSICDBLoc) VALUES(1,'/Music/','/Loader/', 'music.db')");
@@ -772,6 +750,7 @@ function setConfigDefaults(callback){
         if(callback){callback();}
     });
 }
+
 function getConfigValues(callback){
   configdb.serialize(function(){
     configdb.get("SELECT * FROM CONFIG WHERE ID = 1",function(err,row){
@@ -793,7 +772,6 @@ function getConfigValues(callback){
 }
 
 function setConfigValues(column,value,callback){
-
   if(column == "MusicDir" || column == "LoadDir" || column == "MUSICDBLoc"){
     //console.log('path',value);
     configdb.serialize(function(){
@@ -812,7 +790,6 @@ function setConfigValues(column,value,callback){
 function assignConfigSettings(callback){
   configdb.serialize(function(){
     configdb.get("SELECT * FROM CONFIG WHERE ID = 1",function(err,row){
-      //console.log(row);
       if (err){throw(err);}
           musDir = row.MusicDir;
           loadDir = row.LoadDir;
