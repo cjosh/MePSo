@@ -237,7 +237,7 @@ var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, 
         stmt.run(musDir + path.normalize(file).toString().split(loadDir)[1]);
         if (metadata.picture[0]){
           stmt = musicdb.prepare("UPDATE MUSIC SET AlbumArt = (?) WHERE Id="+ row.Id );
-          stmt.run(metadata.picture[0].data);
+          stmt.run(/*metadata.picture[0].data*/''); //taking out until I figure out a better way to handle images without storing them in the db
         }
 
       }
