@@ -257,7 +257,7 @@ var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, 
       if(metadata.picture[0]){i = metadata.picture[0].data}else{i = null}
       if(metadata.duration){j = metadata.duration * 1000}else{j = null} //until I find out how to get musicmetadata to give exact amounts.
       k = fs.statSync(file)['size'];
-      l = __dirname + musDir + path.normalize(file).toString().split('/Loader/')[1];
+      l = musDir + path.normalize(file).toString().split(loadDir)[1];
       m = Date();
       stmt.run(a,b,c,d,e,f,g,h,i,j,k,l,m);
 
@@ -268,7 +268,7 @@ var parser = mm(fs.createReadStream(file),  { duration: true}, 		function (err, 
 
 //directory moving
 function loadMusic(replace,callback)    {
-  cpr(__dirname + loadDir,__dirname + musDir, {
+  cpr(loadDir,musDir, {
       deleteFirst: false,
       overwrite: replace,
       confirm: true
@@ -281,7 +281,7 @@ function loadMusic(replace,callback)    {
 }
 function syncMusic(andLoad,callback){
       var allowedTypes = ['.mp3','.wav', '.ogg', '.flac', '.m4a', '.m4p'];
-      recursive(__dirname + loadDir, function (err, files){
+      recursive(loadDir, function (err, files){
         if (err) { throw err; }
         var count = 0;
         files.forEach(function(file){
