@@ -3,6 +3,24 @@ var eurecaClient = new Eureca.Client();
 var editMode = 0;
 var playlistEdited;
 var currentlyEditing = false;
+var isScroll = false;
+/* from mobiscroll touch script*/
+var startX,
+    startY,
+    tap;
+
+function getCoord(e, c) {
+    return /touch/.test(e.type) ? (e.originalEvent || e).changedTouches[0]['page' + c] : e['page' + c];
+}
+
+function setTap() {
+    tap = true;
+    setTimeout(function () {
+        tap = false;
+    }, 500);
+}
+/* */
+
 eurecaClient.exports.toggleLoadingScreen = function (){
     if (idHasClass('loading', 'active')) {
         document.getElementById('loading').classList.remove("active");
@@ -178,15 +196,38 @@ eurecaClient.ready(function(serverProxy){
   class Song extends React.Component{
     constructor(props){
       super(props);
-      this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true};
+      this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true, eligibleToPlay: true};
     }
 
     _clickAction(){
 
-      if(this.state.dragMode == false){
-        changeSong(this.props.arrIndex);
-        playSong();
+      if(this.state.dragMode == false && this.state.eligibleToPlay == true){
+          changeSong(this.props.arrIndex);
+          playSong();
       }
+    }
+
+    click(e){
+      if('ontouchstart' in window != true){console.log('no touch enabled');this._clickAction();}
+    }
+
+    touchStart(e){
+      startX = getCoord(e, 'X');
+      startY = getCoord(e, 'Y');
+    }
+
+    touchEnd(e){
+      if (Math.abs(getCoord(e, 'X') - startX) < 10 && Math.abs(getCoord(e, 'Y') - startY) < 10) {
+        // Prevent emulated mouse events
+        e.preventDefault();
+        this.setState({eligibleToPlay:true});
+        this._clickAction();
+      }
+      else{
+        this.setState({eligibleToPlay:false});
+        this._clickAction();
+      }
+
     }
 
     dragStart(e){
@@ -253,7 +294,7 @@ eurecaClient.ready(function(serverProxy){
         document.getElementById('screen2').classList.remove("drag");
       }
 
-      return <div data-songid={this.props.trackInfo.Id} onClick={this._clickAction.bind(this)} className={"track"} draggable={isDragMode ?  "true": "false"} onDragEnd={isDragMode ? this.dragEnd.bind(this) : ''} onDragOver={isDragMode ? this.dragOver.bind(this) : ''} onDragStart={isDragMode ? this.dragStart.bind(this) : ''}>
+      return <div data-songid={this.props.trackInfo.Id} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)} onClick={this.click.bind(this)} className={"track"} draggable={isDragMode ?  "true": "false"} onDragEnd={isDragMode ? this.dragEnd.bind(this) : ''} onDragOver={isDragMode ? this.dragOver.bind(this) : ''} onDragStart={isDragMode ? this.dragStart.bind(this) : ''}>
         <span draggable={"false"}>{this.props.trackInfo.Title}</span><br draggable={"false"} />
         <span draggable={"false"}><i draggable={"false"}>{this.props.trackInfo.Artist}</i></span>
       </div>
