@@ -206,10 +206,10 @@ eurecaClient.ready(function(serverProxy){
     }
 
     touchStart(e){
-	  e.preventDefault();
+	    e.preventDefault();
       this.setState({startX:getCoord(e, 'X')});
       this.setState({startY:getCoord(e, 'Y')});
-	  console.log('Start',this.state.startX,this.state.startY);
+	    console.log('Start',this.state.startX,this.state.startY);
     }
 
 	touchMove(e){
@@ -225,28 +225,23 @@ eurecaClient.ready(function(serverProxy){
 			window.scrollBy(0,-10);
 			return true;
 		}
-	
+
 	}
-	
+
     touchEnd(e){
       if (Math.abs(getCoord(e, 'Y') - this.state.startY) < 15) {
-        // Prevent emulated mouse events
         e.preventDefault();
         this.setState({eligibleToPlay:true});
         this._clickAction();
-		console.log('play touchend lower 25',getCoord(e, 'Y'), this.state.startY,Math.abs(getCoord(e, 'Y') - this.state.startY));
 		return true;
       }
       else{
         this.setState({eligibleToPlay:false});
-		console.log('noplay touch end false');
 		return true;
       }
-	
     }
 
     dragStart(e){
-
       if(e.currentTarget.parentNode.parentNode.id == 'screen'){
         Array.prototype.every.call(document.getElementById('screen2').getElementsByClassName('track'),function(e1){
           if(e1.getAttribute('data-songid') == e.currentTarget.getAttribute('data-songid')){
