@@ -4,22 +4,15 @@ var editMode = 0;
 var playlistEdited;
 var currentlyEditing = false;
 var isScroll = false;
+
 /* from mobiscroll touch script*/
-var startX,
-    startY,
-    tap;
+
 
 function getCoord(e, c) {
     return /touch/.test(e.type) ? (e.originalEvent || e).changedTouches[0]['page' + c] : e['page' + c];
 }
 
-function setTap() {
-    tap = true;
-    setTimeout(function () {
-        tap = false;
-    }, 500);
-}
-/* */
+
 
 eurecaClient.exports.toggleLoadingScreen = function (){
     if (idHasClass('loading', 'active')) {
@@ -196,8 +189,9 @@ eurecaClient.ready(function(serverProxy){
   class Song extends React.Component{
     constructor(props){
       super(props);
-      this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true, eligibleToPlay: true};
+      this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true, eligibleToPlay: true,startX:null, startY:null};
     }
+
 
     _clickAction(){
 
@@ -212,22 +206,43 @@ eurecaClient.ready(function(serverProxy){
     }
 
     touchStart(e){
-      startX = getCoord(e, 'X');
-      startY = getCoord(e, 'Y');
+	  e.preventDefault();
+      this.setState({startX:getCoord(e, 'X')});
+      this.setState({startY:getCoord(e, 'Y')});
+	  console.log('Start',this.state.startX,this.state.startY);
     }
 
+	touchMove(e){
+		e.preventDefault();
+		var yLocation = getCoord(e, 'Y') > document.documentElement.clientHeight ? document.documentElement.clientHeight : getCoord(e, 'Y');
+		var topSectionHeight = document.getElementById('main').clientHeight + document.getElementById('player').clientHeight; //for areas above playlist.
+		var scrollingUp = getCoord(e,'Y') > this.state.startY ? false : true;
+		if(scrollingUp && document.documentElement.clientHeight - (document.body.clientHeight - getCoord(e,'Y'))  <  document.documentElement.clientHeight/2){
+			window.scrollBy(0,10);
+			return true;
+		}
+		else if(!scrollingUp){
+			window.scrollBy(0,-10);
+			return true;
+		}
+	
+	}
+	
     touchEnd(e){
-      if (Math.abs(getCoord(e, 'X') - startX) < 10 && Math.abs(getCoord(e, 'Y') - startY) < 10) {
+      if (Math.abs(getCoord(e, 'Y') - this.state.startY) < 15) {
         // Prevent emulated mouse events
         e.preventDefault();
         this.setState({eligibleToPlay:true});
         this._clickAction();
+		console.log('play touchend lower 25',getCoord(e, 'Y'), this.state.startY,Math.abs(getCoord(e, 'Y') - this.state.startY));
+		return true;
       }
       else{
         this.setState({eligibleToPlay:false});
-        this._clickAction();
+		console.log('noplay touch end false');
+		return true;
       }
-
+	
     }
 
     dragStart(e){
@@ -294,7 +309,7 @@ eurecaClient.ready(function(serverProxy){
         document.getElementById('screen2').classList.remove("drag");
       }
 
-      return <div data-songid={this.props.trackInfo.Id} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)} onClick={this.click.bind(this)} className={"track"} draggable={isDragMode ?  "true": "false"} onDragEnd={isDragMode ? this.dragEnd.bind(this) : ''} onDragOver={isDragMode ? this.dragOver.bind(this) : ''} onDragStart={isDragMode ? this.dragStart.bind(this) : ''}>
+      return <div data-songid={this.props.trackInfo.Id} cancelable={true} onTouchMove={this.touchMove.bind(this)} onTouchStart={this.touchStart.bind(this)} onTouchEnd={this.touchEnd.bind(this)} onClick={this.click.bind(this)} className={"track"} draggable={isDragMode ?  "true": "false"} onDragEnd={isDragMode ? this.dragEnd.bind(this) : ''} onDragOver={isDragMode ? this.dragOver.bind(this) : ''} onDragStart={isDragMode ? this.dragStart.bind(this) : ''}>
         <span draggable={"false"}>{this.props.trackInfo.Title}</span><br draggable={"false"} />
         <span draggable={"false"}><i draggable={"false"}>{this.props.trackInfo.Artist}</i></span>
       </div>
@@ -612,8 +627,8 @@ eurecaClient.ready(function(serverProxy){
     }
     else{
       var songAddress = playlistInfo.Tracks[song].trackInfo.Locations;
-      var address = songAddress.substring(songAddress.indexOf('/Music/'));
-      audioPlayer.setAttribute("src",address);
+      var address = '/'+songAddress.substring(dir.length);
+      audioPlayer.setAttribute("src",encodeURIComponent(address));
       audioPlayer.play();
       currentlyPlaying = playlistInfo.Tracks[song].trackInfo.Title + ' by ' + playlistInfo.Tracks[song].trackInfo.Artist;
       React.render(<CurrentlyPlaying currenttrack={song}/>,document.getElementsByClassName('currentlyPlaying')[0]);
