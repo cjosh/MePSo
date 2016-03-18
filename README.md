@@ -1,12 +1,14 @@
 #MePSo v0.1.0
-(follow its development on https://sleeper.io)
+(follow its development on https://sleeper.io and read [this](https://sleeper.io/2016/02/07/assembling-the-player/) to see this software in use)
+
 ###What is this?
 MePSo (Media Playing Software) is mp3 player software built using Javascript for running on a Raspberry Pi (Although it can be run anything that supports Node).
 
 ###Why did you build this?
-My iPod was getting full, and instead of just buying another iPod I started thinking about what it would take to build my own MP3 player.
-I have a bunch of iTunes playlists that I wanted to save and reuse with this. They're all in an XML format, so I built the software so it would attempt to match the entry to the file and then dump the data into a SQL database.
-I had some DRM iTunes music from back in the day so I also wanted the ability to flag those files so I could replace them later (have yet to implement).  
+1. My iPod was getting full, and instead of just buying another iPod I looked at what it would take to build my own MP3 player.
+2. I have a bunch of iTunes playlists that I wanted to save and reuse with this program, so I built this so it would attempt to match the iTunes playlist entry to the track and then dump the data into a SQL database.
+3. I had some DRM iTunes music from back in the day so I also wanted the ability to flag those files so I could replace them later (have yet to implement).  
+4. DIY mentality/Use for Raspberry Pi/Why not?/Learn Node and React
 
 ###What are the requirements to run this?
 Computer
@@ -25,7 +27,7 @@ Navigate to the project folder, run <code>node startMepso.js</code> in a termina
 The program's brains. This file holds all functions for processing data and managing configuration.
 
 **mepsoUI.js**
-Reponsible for user interface. Uses React.
+Reponsible for the user interface. Uses React.
 
 ###API
 There are several URL endpoints available to serve or manage data. GET requests return JSON.
