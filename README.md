@@ -11,36 +11,35 @@ MePSo (Media Playing Software) is mp3 player software built using Javascript for
 4. DIY mentality/Use for Raspberry Pi/Why not?/Learn Node and React
 
 ###What are the requirements to run this?
-Computer
-Node v4
-Browser
+*Computer
+*Node v4
+*Browser
 
 ###How does the program work?
 It's essentially a web server that specializes in serving mp3 data JSON and an HTML page which serves as a UI. There are two folders, Loader and Music. Place the files you want to add to the mp3 player into the Loader folder and they can be synced (registers the files into the database and moves them to the music folder).
 
 Three JavaScript files make up the bulk of the program.
-**startMepso.js**
-Serves as an entry point to the program. Running this file starts up a server which connects the user interface to the rest of the program.
-Navigate to the project folder, run <code>node startMepso.js</code> in a terminal and then navigate to localhost:8080/mepso.html in a browser to start using the program.
 
-**backend.js**
-The program's brains. This file holds all functions for processing data and managing configuration.
+**startMepso.js** Serves as an entry point to the program. Running this file starts up a server which connects the user interface to the rest of the program.
+Navigate to the project folder, open a terminal, install and run <code>node startMepso.js</code>, then navigate to localhost:8080/mepso.html in a browser to start using the program.
 
-**mepsoUI.js**
-Reponsible for the user interface. Uses React.
+**backend.js** The program's brains. This file holds all functions for processing data and managing configuration.
+
+**mepsoUI.js** Reponsible for the user interface. Uses React, requires Babel because of ES6.
+
 
 ###API
 There are several URL endpoints available to serve or manage data. GET requests return JSON.
 
-/playlists/ (GET) - get a list of available playlists
+**/playlists/ (GET)** - get a list of available playlists
 
-/playlists/{id}?{querystring} (GET, DELETE, PUT) - retrieving/creating/editing a specific playlist. Query strings (album, artist, genre) may be appended for more specific results. The MP3 player manages tracks on a playlist basis and all tracks are served from a playlist. Playlists may be generated on the fly: queried tracks (ex: Find all tracks by X artist) are served as a playlist with an id of -1. Use an id of 0 to retrieve all tracks.
+**/playlists/{id}?{querystring} (GET, DELETE, PUT)** - retrieving/creating/editing a specific playlist. Query strings (album, artist, genre) may be appended for more specific results. The MP3 player manages tracks on a playlist basis and all tracks are served from a playlist. Playlists may be generated on the fly: queried tracks (ex: Find all tracks by X artist) are served as a playlist with an id of -1. Use an id of 0 to retrieve all tracks.
 
 The ?tracks query string is used for rearranging playlist track orders. Its value should be a comma-separated list of song ids and is used only for PUT requests.
 
-/playlist/new (POST) - creates a new playlist
+**/playlist/new (POST)** - creates a new playlist
 
-/category/{categoryType}?{querystring} (GET) - Get a list of artists/albums/genres.
+**/category/{categoryType}?{querystring} (GET)** - Get a list of artists/albums/genres.
 Category types:
 genre - 1
 artist - 2
