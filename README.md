@@ -52,7 +52,7 @@ If a user browsed by genre and selected one, a list of artists would return from
 
 
 ###Bugs/issues
-<li>The program uses web technologies, but in is current state is not meant to be used online.There are no security measures in place and the program is vulnerable to SQL injection.</li>
+<li>The program uses web technologies, but in is current state is not meant to be used online. There are no security measures in place and the program is vulnerable to SQL injection.</li>
 <li>Some music file names with punctuation or foreign characters may not handle well and the program will be unable to find them.</li>
 <li>When naming a new playlist, the first on-screen keyboard button press will not register.</li>
 <li>Playlists can not have zero entries, thus newly created playlists start with one track.</li>
