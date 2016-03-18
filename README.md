@@ -1,5 +1,5 @@
 #MePSo v0.1.0
-(follow its development on https://sleeper.io and read [this](https://sleeper.io/2016/02/07/assembling-the-player/) to see this software in use)
+Follow its development on https://sleeper.io and read [this](https://sleeper.io/2016/02/07/assembling-the-player/) to see this software in use.
 
 ###What is this?
 MePSo (Media Playing Software) is mp3 player software built using Javascript for running on a Raspberry Pi (Although it can be run anything that supports Node).
