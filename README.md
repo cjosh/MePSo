@@ -11,9 +11,9 @@ MePSo (Media Playing Software) is mp3 player software built using Javascript for
 4. DIY mentality/Use for Raspberry Pi/Why not?/Learn Node and React
 
 ###What are the requirements to run this?
-*Computer
-*Node v4
-*Browser
+#computer
+#Node v4
+#browser
 
 ###How does the program work?
 It's essentially a web server that specializes in serving mp3 data JSON and an HTML page which serves as a UI. There are two folders, Loader and Music. Place the files you want to add to the mp3 player into the Loader folder and they can be synced (registers the files into the database and moves them to the music folder).
