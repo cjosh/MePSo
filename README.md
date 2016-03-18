@@ -52,16 +52,15 @@ If a user browsed by genre and selected one, a list of artists would return from
 
 
 ###Bugs/issues
-*The program uses web technologies, but in is current state is not meant to be used online. There are no security measures in place and the program is vulnerable to SQL injection.
-*Some music file names with punctuation or foreign characters may not handle well and the program will be unable to find them.
-*When naming a new playlist, the first on-screen keyboard button press will not register.
-*Playlists can not have zero entries, thus newly created playlists start with one track.
-*There are certainly more bugs, but these are the one I remember off the top.
-*The edit playlist functionality is wonky and confusing at best.
-
+<li>The program uses web technologies, but in is current state is not meant to be used online.There are no security measures in place and the program is vulnerable to SQL injection.</li>
+<li>Some music file names with punctuation or foreign characters may not handle well and the program will be unable to find them.</li>
+<li>When naming a new playlist, the first on-screen keyboard button press will not register.</li>
+<li>Playlists can not have zero entries, thus newly created playlists start with one track.</li>
+<li>The edit playlist functionality is wonky and confusing at best.</li>
+<li>There are certainly more bugs, but these are the one I remember off the top.</li>
 ###Future feature To-do/wishlist
-*Flag/replace M4P files
-*Shuffle
-*Online safe
-*Audio EQ
-*Google Play/Spotify/Apple Music/{insert streaming service} integration
+<li>Flag/replace M4P files</li>
+<li>Shuffle</li>
+<li>Online safe</li>
+<li>Audio EQ</li>
+<li>Google Play/Spotify/Apple Music/{insert streaming service} integration</li>
