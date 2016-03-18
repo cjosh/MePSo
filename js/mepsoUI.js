@@ -6,13 +6,9 @@ var currentlyEditing = false;
 var isScroll = false;
 
 /* from mobiscroll touch script*/
-
-
 function getCoord(e, c) {
     return /touch/.test(e.type) ? (e.originalEvent || e).changedTouches[0]['page' + c] : e['page' + c];
 }
-
-
 
 eurecaClient.exports.toggleLoadingScreen = function (){
     if (idHasClass('loading', 'active')) {
@@ -22,9 +18,11 @@ eurecaClient.exports.toggleLoadingScreen = function (){
         document.getElementById('loading').classList.add("active");
     }
 }
+
 eurecaClient.exports.toggleDoneMessage = function (){
   alert('done');
 }
+
 eurecaClient.ready(function(serverProxy){
   var screenArea = document.getElementById('screen');
 
@@ -55,7 +53,6 @@ eurecaClient.ready(function(serverProxy){
       this.state = {hidden: false, explicitHide: false};
     }
     render(){
-
       return <div className="MepsoMediaControls">
           <CurrentlyPlaying/>
           <div className="audioContainer">
@@ -67,9 +64,7 @@ eurecaClient.ready(function(serverProxy){
     }
 
     componentDidMount(){
-
       this._addNavEventListeners();
-
       //onscreen keyboard
       //A new Oskar is created each time, may need to edit the script
       var oskar = document.createElement("script");
@@ -131,19 +126,19 @@ eurecaClient.ready(function(serverProxy){
   }
 
   class MainMenuButton extends React.Component{
-      constructor(props){
-        super(props);
-      }
+    constructor(props){
+      super(props);
+    }
 
-      _clickAction(){
-        this.props.function()
-      }
+    _clickAction(){
+      this.props.function()
+    }
 
-      render(){
-        var titleText = this.props.textName != undefined ? this.props.textName : this.props.name; //is a back button?
-        return <div className={this.props.className} menuName={this.props.name} onClick={this._clickAction.bind(this)}>{titleText}
-        </div>
-      }
+    render(){
+      var titleText = this.props.textName != undefined ? this.props.textName : this.props.name; //is a back button?
+      return <div className={this.props.className} menuName={this.props.name} onClick={this._clickAction.bind(this)}>{titleText}
+      </div>
+    }
   }
 
   class Playlist extends React.Component{
@@ -192,7 +187,6 @@ eurecaClient.ready(function(serverProxy){
       this.state = {isPlaying:false,dragMode:editMode == 1 ? true : false,eligibleToDrag: true, eligibleToPlay: true,startX:null, startY:null};
     }
 
-
     _clickAction(){
 
       if(this.state.dragMode == false && this.state.eligibleToPlay == true){
@@ -212,32 +206,32 @@ eurecaClient.ready(function(serverProxy){
 	    console.log('Start',this.state.startX,this.state.startY);
     }
 
-	touchMove(e){
-		e.preventDefault();
-		var yLocation = getCoord(e, 'Y') > document.documentElement.clientHeight ? document.documentElement.clientHeight : getCoord(e, 'Y');
-		var topSectionHeight = document.getElementById('main').clientHeight + document.getElementById('player').clientHeight; //for areas above playlist.
-		var scrollingUp = getCoord(e,'Y') > this.state.startY ? false : true;
-		if(scrollingUp && document.documentElement.clientHeight - (document.body.clientHeight - getCoord(e,'Y'))  <  document.documentElement.clientHeight/2){
-			window.scrollBy(0,10);
-			return true;
-		}
-		else if(!scrollingUp){
-			window.scrollBy(0,-10);
-			return true;
-		}
+    touchMove(e){
+  		e.preventDefault();
+  		var yLocation = getCoord(e, 'Y') > document.documentElement.clientHeight ? document.documentElement.clientHeight : getCoord(e, 'Y');
+  		var topSectionHeight = document.getElementById('main').clientHeight + document.getElementById('player').clientHeight; //for areas above playlist.
+  		var scrollingUp = getCoord(e,'Y') > this.state.startY ? false : true;
+  		if(scrollingUp && document.documentElement.clientHeight - (document.body.clientHeight - getCoord(e,'Y'))  <  document.documentElement.clientHeight/2){
+  			window.scrollBy(0,10);
+  			return true;
+  		}
+  		else if(!scrollingUp){
+  			window.scrollBy(0,-10);
+  			return true;
+  		}
 
-	}
+  	}
 
     touchEnd(e){
       if (Math.abs(getCoord(e, 'Y') - this.state.startY) < 15) {
         e.preventDefault();
         this.setState({eligibleToPlay:true});
         this._clickAction();
-		return true;
+		    return true;
       }
       else{
         this.setState({eligibleToPlay:false});
-		return true;
+		    return true;
       }
     }
 
@@ -616,7 +610,6 @@ eurecaClient.ready(function(serverProxy){
 
   function playSong(){
     audioPlayer = document.getElementById("audioPlayer");
-    //console.log('song: '+song);
     if(playlistInfo.Tracks[song].trackInfo.Locations == null){
       checkIfNextSong(song);
     }
@@ -701,11 +694,11 @@ eurecaClient.ready(function(serverProxy){
     }
   }
   function cancelEdit(){
-      editMode = 0;
-      resetScreen();
-      document.getElementById('screen2').innerHTML = "";
-      document.getElementById('screen2').classList.remove('drag');
-      document.getElementById('screen').classList.remove('drag');
+    editMode = 0;
+    resetScreen();
+    document.getElementById('screen2').innerHTML = "";
+    document.getElementById('screen2').classList.remove('drag');
+    document.getElementById('screen').classList.remove('drag');
   }
   serverProxy.sendDir().onReady(function(result){dir = result;console.log(dir);});
 
