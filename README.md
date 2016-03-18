@@ -7,7 +7,7 @@ MePSo (Media Playing Software) is mp3 player software built using Javascript for
 ###Why did you build this?
 1. My iPod was getting full, and instead of just buying another iPod I looked into what it would take to build my own MP3 player.
 2. I have a bunch of iTunes playlists that I wanted to save and reuse, so I wanted something that would also attempt to match iTunes playlists with their tracks and dump the data into a SQL database.
-3. I had some DRM iTunes music from back in the day so I also wanted the ability to flag those files so I could replace them later (have yet to implement).  
+3. I had some DRM iTunes music from back in the day, so I also wanted the ability to flag those files so I could replace them later (have yet to implement).  
 4. DIY mentality/Use for Raspberry Pi/Why not?/Learn Node and React
 
 ###What are the requirements to run this?
