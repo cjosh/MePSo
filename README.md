@@ -59,7 +59,7 @@ If a user browsed by genre and selected one, a list of artists would return from
 <li>Playlists can not have zero entries, thus newly created playlists start with one track.</li>
 <li>The edit playlist functionality is wonky and confusing at best.</li>
 <li>There are certainly more bugs, but these are the one I remember off the top.</li>
-###Future feature To-do/wishlist
+###Future feature to-do/wishlist
 <li>Flag/replace M4P files</li>
 <li>Shuffle</li>
 <li>Online safe</li>
