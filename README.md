@@ -20,12 +20,12 @@ It's essentially a web server that specializes in serving mp3 data JSON and an H
 
 Three JavaScript files make up the bulk of the program.
 
-**startMepso.js** Serves as an entry point to the program. Running this file starts up a server which connects the user interface to the rest of the program.
+**startMepso.js** serves as an entry point to the program. Running this file starts up a server which connects the user interface to the rest of the program.
 Navigate to the project folder, open a terminal, install and run <code>node startMepso.js</code>, then navigate to localhost:8080/mepso.html in a browser to start using the program.
 
-**backend.js** The program's brains. This file holds all functions for processing data and managing configuration.
+**backend.js** is the program's brains. This file holds all functions for processing data and managing configuration.
 
-**mepsoUI.js** Reponsible for the user interface. Uses React, requires Babel because of ES6.
+**mepsoUI.js** is reponsible for the user interface. Uses React, requires Babel because of ES6.
 
 
 ###API
