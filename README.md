@@ -40,10 +40,11 @@ The ?tracks query string is used for rearranging playlist track orders. Its valu
 **/playlist/new (POST)** - creates a new playlist
 
 **/category/{categoryType}?{querystring} (GET)** - retrieve a list of artists/albums/genres.
+
 Category types:
-genre - 1
-artist - 2
-album - 3
+<li>genre - 1</li>
+<li>artist - 2</li>
+<li>album - 3</li>
 
 Category types are always queried in that order. The category type keeps track of what category is currently being queried, and the querystring adds the previous information.
 The UI, for example, uses this when the user is navigating the 'by genre'/'by artist'/'by album' menus.
